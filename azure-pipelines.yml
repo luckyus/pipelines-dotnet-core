@@ -20,24 +20,27 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration Release' # Update this to match your need
 - task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: Test with code coverage
   inputs:
     command: 'test'
     projects: '**/*Tests*/*.csproj'
     arguments: '--configuaration $(buildConfiguration) --collect "Code coverage"'
     testRunTitle: 'my test'
-    zipAfterPublish: True
 
 - task: DotNetCoreCLI@2
+  displayName: publish
   inputs:
     command: 'publish'
     publishWebProjects: true
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
 
 - script: dotnet build --configuration $(buildConfiguration)
